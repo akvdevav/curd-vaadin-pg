@@ -99,10 +99,13 @@ colima start --cpu 8 --memory 12
 mvn dependency:tree
 ```
 
+> Building a production build with vaadin options
+
 ```
 mvn clean package -Pproduction -Dvaadin.force.production.build=true
 ```
 
+> Verfify if vaadin builds are prod ready
 ```
 jar tvf target/crud-with-vaadin-initial-0.0.1-SNAPSHOT.jar | grep META-INF/VAADIN/
 ```
