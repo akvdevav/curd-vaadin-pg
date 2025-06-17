@@ -99,6 +99,15 @@ colima start --cpu 8 --memory 12
 mvn dependency:tree
 ```
 
+```
+mvn clean package -Pproduction -Dvaadin.force.production.build=true
+```
+
+```
+jar tvf target/crud-with-vaadin-initial-0.0.1-SNAPSHOT.jar | grep META-INF/VAADIN/
+```
+
+
 > To create the image, run the following goal: (-X for debug ouput)
 ```
 ./mvnw spring-boot:build-image -Pnative -DskipTests -X
@@ -139,3 +148,10 @@ target/spdemo
 ```
 ./mvnw test -PnativeTest
 ```
+
+```
+rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/workspace/curd-vaadin-pg  ubuntu@XX.XX.XX.XX:~
+```
+
+
+git reset --soft HEAD~1
