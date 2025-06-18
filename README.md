@@ -102,7 +102,7 @@ mvn dependency:tree
 > Building a production build with vaadin options
 
 ```
-mvn clean package -Pproduction -Dvaadin.force.production.build=true
+mvn clean package -Pproduction -Dvaadin.force.production.build=true -DskipTests
 ```
 
 > Verfify if vaadin builds are prod ready
