@@ -2,9 +2,19 @@
 package com.example.crudwithvaadin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.FileCopyUtils;
 
+import com.helger.commons.io.resource.ClassPathResource;
+
+import jakarta.transaction.Transactional;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -37,4 +47,22 @@ public interface ProductSearchRepository extends JpaRepository<ProductSearch, In
      @Query(value = "SELECT count(*) FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', :searchTerm)",
            nativeQuery = true)
     Long countText(@Param("searchTerm") String searchTerm);
+
+
+    @Modifying
+    @Transactional
+    default void generateDummyData(JdbcTemplate jdbcTemplate) { // Accept JdbcTemplate as parameter or autowire it
+        try {
+            // Load the SQL script from classpath
+            ClassPathResource resource = new ClassPathResource("sql/generate_dummy_products.sql");
+            String sql;
+            try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
+                sql = FileCopyUtils.copyToString(reader);
+            }
+            // Execute the loaded SQL
+            jdbcTemplate.execute(sql);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load or execute SQL script for dummy data generation", e);
+        }
+    }
 }
