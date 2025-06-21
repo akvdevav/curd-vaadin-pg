@@ -260,11 +260,24 @@ FROM
 WHERE
     title_tsv @@ to_tsquery('english', 'book');
 
+SELECT
+   count(*)
+FROM
+    public.products_search
+WHERE
+    title_tsv @@ to_tsquery('english', 'book');
+
+SELECT p.prod_id, p.category, p.title, p.actor, p.price , p.title_tsv FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', '')
+
 -- select * from public.products_search;
 
 
 -- insert into public.products_search (select * from public.products);
 
+
+
+-- SELECT count(*) FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', 'plants');
+-- SELECT prod_id, category, title, actor, price, title_tsv FROM public.products_search WHERE title_tsv @@ to_tsquery('english', 'plants');
 
 -- SELECT
 --     prod_id,
