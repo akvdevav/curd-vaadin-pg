@@ -1,6 +1,6 @@
 -- Table: public.products_search
 
--- DROP TABLE IF EXISTS public.products_search;
+DROP TABLE IF EXISTS public.products_search;
 
 -- Step 1: Create the function first
 CREATE OR REPLACE FUNCTION public.products_title_tsvector_trigger()
