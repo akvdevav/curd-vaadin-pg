@@ -157,4 +157,11 @@ rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/work
 ```
 
 
+http://localhost:8080/search
+
+
+http://localhost:8080/psql-terminal
+
+
+
 git reset --soft HEAD~1
