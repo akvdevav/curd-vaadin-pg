@@ -244,8 +244,10 @@ public class ProductSearchView extends VerticalLayout {
         this.searchButton = new Button("Search", VaadinIcon.SEARCH.create());
 
         // Configure search filter
-        searchFilter.setPlaceholder("Search by title...");
+        // searchFilter.setPlaceholder("Search by title...");
+        searchFilter.setPlaceholder("Enter search term (e.g., 'book', 'shoes & shirt')");
         searchFilter.setClearButtonVisible(true);
+        searchFilter.setWidth("400px");
         searchFilter.setValueChangeMode(ValueChangeMode.LAZY); // Search on value change with a slight delay
 
         // Layout components
