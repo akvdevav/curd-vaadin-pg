@@ -1,10 +1,20 @@
 -- Table: public.products_search
 
-DROP TABLE IF EXISTS public.products_search;
+-- DROP TABLE IF EXISTS public.products_search;
 
+-- Step 1: Create the function first
+CREATE OR REPLACE FUNCTION public.products_title_tsvector_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.title_tsv := to_tsvector('pg_catalog.english', NEW.title);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Step 2: Then, create your table and trigger (as you had it)
 CREATE TABLE IF NOT EXISTS public.products_search
 (
-    prod_id integer NOT NULL DEFAULT nextval('products_prod_id_seq'::regclass),
+    prod_id serial NOT NULL,
     category integer NOT NULL,
     title character varying(255) COLLATE pg_catalog."default" NOT NULL,
     actor character varying(255) COLLATE pg_catalog."default" NOT NULL,
@@ -12,27 +22,19 @@ CREATE TABLE IF NOT EXISTS public.products_search
     special smallint,
     common_prod_id integer NOT NULL,
     title_tsv tsvector
-)
-
-TABLESPACE pg_default;
+);
 
 ALTER TABLE IF EXISTS public.products_search
     OWNER to postgres;
+
 -- Index: products_title_tsv_idx
-
--- DROP INDEX IF EXISTS public.products_title_tsv_idx;
-
 CREATE INDEX IF NOT EXISTS products_title_tsv_idx
     ON public.products_search USING gin
-    (title_tsv)
-    TABLESPACE pg_default;
+    (title_tsv);
 
 -- Trigger: tsvector_update_title
-
--- DROP TRIGGER IF EXISTS tsvector_update_title ON public.products_search;
-
 CREATE OR REPLACE TRIGGER tsvector_update_title
-    BEFORE INSERT OR UPDATE 
+    BEFORE INSERT OR UPDATE
     ON public.products_search
     FOR EACH ROW
     EXECUTE FUNCTION public.products_title_tsvector_trigger();
@@ -258,7 +260,7 @@ SELECT
 FROM
     public.products_search
 WHERE
-    title_tsv @@ to_tsquery('english', 'book');
+    title_tsv @@ to_tsquery('english', 'plant');
 
 SELECT
    count(*)
@@ -267,14 +269,14 @@ FROM
 WHERE
     title_tsv @@ to_tsquery('english', 'book');
 
-SELECT p.prod_id, p.category, p.title, p.actor, p.price , p.title_tsv FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', '')
+-- SELECT p.prod_id, p.category, p.title, p.actor, p.price , p.title_tsv FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', '')
 
 -- select * from public.products_search;
 
 
 -- insert into public.products_search (select * from public.products);
 
-
+-- select count(*) from public.products_search ;
 
 -- SELECT count(*) FROM public.products_search p WHERE p.title_tsv @@ to_tsquery('english', 'plants');
 -- SELECT prod_id, category, title, actor, price, title_tsv FROM public.products_search WHERE title_tsv @@ to_tsquery('english', 'plants');
@@ -292,4 +294,16 @@ SELECT p.prod_id, p.category, p.title, p.actor, p.price , p.title_tsv FROM publi
 
 
 
+-- SELECT 
+--     deqs.last_execution_time AS [Time],	
+--     dest.text AS [Query],
+--     DB_NAME(dest.dbid) AS [Database]
+-- FROM
+--     sys.dm_exec_query_stats AS deqs
+-- CROSS APPLY
+--     sys.dm_exec_sql_text(deqs.sql_handle) AS dest
+-- WHERE
+--     dest.dbid = DB_ID('public') -- Optional: Filter for a specific database
+-- ORDER BY
+--     deqs.last_execution_time DESC;
 
