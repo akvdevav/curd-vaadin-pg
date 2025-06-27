@@ -81,6 +81,15 @@ mvn clean package
 mvn spring-boot:run
 ```
 
+### Exposed endpoints 
+
+[http://localhost:8080/](http://localhost:8080)
+
+[http://localhost:8080/search](http://localhost:8080/search)
+
+[http://localhost:8080/psql-terminal](http://localhost:8080/psql-terminal)
+
+
 ### Setup JAVA_HOME
 ```
 brew --prefix openjdk@17
@@ -151,17 +160,6 @@ target/spdemo
 ```
 ./mvnw test -PnativeTest
 ```
-
-
-
-### Exposed endpoints 
-
-[http://localhost:8080/](http://localhost:8080)
-
-[http://localhost:8080/search](http://localhost:8080/search)
-
-
-[http://localhost:8080/psql-terminal](http://localhost:8080/psql-terminal)
 
 
 #### Usefull Commands
