@@ -156,11 +156,14 @@ target/spdemo
 rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/workspace/curd-vaadin-pg  ubuntu@XX.XX.XX.XX:~
 ```
 
+### Exposed endpoints 
 
-http://localhost:8080/search
+[http://localhost:8080/](http://localhost:8080)
+
+[http://localhost:8080/search](http://localhost:8080/search)
 
 
-http://localhost:8080/psql-terminal
+[http://localhost:8080/psql-terminal](http://localhost:8080/psql-terminal)
 
 
 
