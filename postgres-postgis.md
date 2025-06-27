@@ -74,7 +74,7 @@ CREATE TABLE product_locations (
 ```
 
 
--- Insert example product locations within the defined zones
+- Insert example product locations within the defined zones
 
 ```
 INSERT INTO product_locations (product_name, category, location) VALUES
@@ -290,6 +290,7 @@ LIMIT 10;
 
 
 ### 💡 Step 5: Inform Store Layout and Product Placement Changes
+
 The insights from the spatial queries can directly inform strategic decisions:
 
 Optimize Product Placement:
@@ -304,7 +305,7 @@ Redesign Store Layout:
 
 **Dwell Time Analysis:** If customers spend very little time in the Produce section, it might indicate poor layout, lack of appealing displays, or difficulty finding items. Conversely, high dwell time in a non-destination zone might indicate confusion or bottlenecks.
 
-**P**ath Analysis:** If many users take a long, winding path to reach a popular product, consider creating a more direct route. If a certain aisle is consistently avoided, it might be a "dead zone" needing revitalization.
+**Path Analysis:** If many users take a long, winding path to reach a popular product, consider creating a more direct route. If a certain aisle is consistently avoided, it might be a "dead zone" needing revitalization.
 
 Staffing Optimization:
 
@@ -316,7 +317,7 @@ Track if promotional displays (treated as temporary "product locations") lead to
 
 Example SQL for Actionable Insights:
 
--- Identify zones with low average dwell time (conceptual, based on point count)
+- Identify zones with low average dwell time (conceptual, based on point count)
 
 ```
 SELECT
