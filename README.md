@@ -152,9 +152,7 @@ target/spdemo
 ./mvnw test -PnativeTest
 ```
 
-```
-rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/workspace/curd-vaadin-pg  ubuntu@XX.XX.XX.XX:~
-```
+
 
 ### Exposed endpoints 
 
@@ -166,5 +164,12 @@ rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/work
 [http://localhost:8080/psql-terminal](http://localhost:8080/psql-terminal)
 
 
+#### Usefull Commands
 
+```
 git reset --soft HEAD~1
+```
+
+```
+rsync -avz --exclude='.git/' --exclude='.cache/'  /Users/avannala/Documents/workspace/curd-vaadin-pg  ubuntu@XX.XX.XX.XX:~
+```
