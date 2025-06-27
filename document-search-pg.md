@@ -24,9 +24,11 @@ category: A general category for the product.
 
 details: This is where the magic happens. It's a JSONB column that can store arbitrary JSON documents. JSONB is binary, parsed JSON, which is faster for querying and indexing compared to JSON (which stores the text representation).
 
-2. Data Insertion (with Random-like Data)
+### 2. Data Insertion (with Random-like Data)
+
 Let's insert some sample data. Notice how the structure within the details JSONB column can vary between rows, mimicking real-world document data. We'll use a mix of data types and nested structures.
 
+```
 INSERT INTO products (name, category, details) VALUES
 ('Quantum Keyboard RGB', 'Peripherals', '{
     "brand": "TechGear",
@@ -125,6 +127,8 @@ INSERT INTO products (name, category, details) VALUES
     "availability": "Low Stock",
     "material": "PU Leather"
 }');
+```
+
 
 3. Querying JSONB Data
 PostgreSQL offers powerful operators and functions for querying JSONB data.
