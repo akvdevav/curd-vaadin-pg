@@ -419,13 +419,18 @@ WHERE
     AND (details->>'price')::NUMERIC < 100.00;
 ```
 
--- Find products with a specific nested specification (e.g., screen_size_inches for monitors)
+- Find products with a specific nested specification (e.g., screen_size_inches for monitors)
+
+```
 SELECT name, details->>'screen_size_inches' AS screen_size
 FROM products
 WHERE category = 'Monitors'
   AND (details->'specifications'->>'screen_size_inches')::INT > 25;
+```
 
--- Find products that have a review from 'Alice'
+- Find products that have a review from 'Alice'
+
+```
 SELECT p.name, p.details->'reviews' AS reviews
 FROM products p
 WHERE EXISTS (
@@ -433,11 +438,12 @@ WHERE EXISTS (
     FROM jsonb_array_elements(p.details->'reviews') AS review
     WHERE review->>'user' = 'Alice'
 );
+```
 
-4. Indexing JSONB Data
+## 4. Indexing JSONB Data
 Indexes are crucial for performance, especially on large datasets. PostgreSQL offers specialized indexes for JSONB.
 
-4.1. GIN Index for General JSONB Querying
+### 4.1. GIN Index for General JSONB Querying
 A GIN (Generalized Inverted Index) is highly recommended for JSONB columns, especially when using operators like @>, ?, ?|, ?&. It indexes all keys and values within the JSONB document.
 
 -- Create a GIN index on the entire details JSONB column
