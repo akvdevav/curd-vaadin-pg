@@ -83,9 +83,16 @@ mvn spring-boot:run
 
 ### Exposed endpoints 
 
+- showcases CURD with postgres + vaadinUI
+
 [http://localhost:8080/](http://localhost:8080)
 
+
+- showcases search functionaly with VaadinUI
+
 [http://localhost:8080/search](http://localhost:8080/search)
+
+- Showcases psql-terminal to be able to interact with database usefull for validations or loading data. You can also leverage client tools to achieve the same. 
 
 [http://localhost:8080/psql-terminal](http://localhost:8080/psql-terminal)
 
