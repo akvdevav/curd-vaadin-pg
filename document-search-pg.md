@@ -1,15 +1,18 @@
-PostgreSQL JSONB Document Storage & Query Showcase
+## PostgreSQL JSONB Document Storage & Query Showcase
 This document demonstrates how to leverage PostgreSQL's JSONB data type for efficient document storage and querying. We'll cover table creation, inserting diverse JSONB data, running various queries to extract and filter information, and optimizing these queries with indexes.
 
-1. Table Creation
+### 1. Table Creation
+
 We'll create a table named products to store information about various products. The details column will be of type JSONB to hold our semi-structured product documents.
 
+```
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     category VARCHAR(100),
     details JSONB
 );
+```
 
 Explanation:
 
