@@ -247,6 +247,8 @@ ORDER BY
 ```
 
 -- Find products a user passed near or viewed (within a certain buffer distance)
+
+```
 SELECT
     up.user_id,
     pl.product_name,
@@ -258,11 +260,15 @@ WHERE
     ST_DWithin(up.path, pl.location, 5) -- Within 5 units of the path
 ORDER BY
     up.user_id, distance_to_path;
+```
 
-4.4 Co-location Analysis: Discover Products Frequently Viewed Together
+
+#### 4.4 Co-location Analysis: Discover Products Frequently Viewed Together
 -- Find pairs of products that are frequently visited by the same users within a short time frame
 -- This is a conceptual query; actual implementation would be more complex, involving time windows.
 -- Here, we find products that are "close" to each other on the same user's path.
+
+```
 SELECT
     p1.product_name AS product1,
     p2.product_name AS product2,
@@ -280,8 +286,10 @@ GROUP BY
 ORDER BY
     users_viewed_both DESC
 LIMIT 10;
+```
 
-💡 Step 5: Inform Store Layout and Product Placement Changes
+
+### 💡 Step 5: Inform Store Layout and Product Placement Changes
 The insights from the spatial queries can directly inform strategic decisions:
 
 Optimize Product Placement:
@@ -292,11 +300,11 @@ If a product (Smartphone X) is in a high-traffic zone but has low dwell time, it
 
 Redesign Store Layout:
 
-Hotspot Analysis: If the Checkout zone is consistently a major hotspot, it confirms its function. If Electronics has unexpectedly high traffic but low sales, investigate why.
+**Hotspot Analysis:** If the Checkout zone is consistently a major hotspot, it confirms its function. If Electronics has unexpectedly high traffic but low sales, investigate why.
 
-Dwell Time Analysis: If customers spend very little time in the Produce section, it might indicate poor layout, lack of appealing displays, or difficulty finding items. Conversely, high dwell time in a non-destination zone might indicate confusion or bottlenecks.
+**Dwell Time Analysis:** If customers spend very little time in the Produce section, it might indicate poor layout, lack of appealing displays, or difficulty finding items. Conversely, high dwell time in a non-destination zone might indicate confusion or bottlenecks.
 
-Path Analysis: If many users take a long, winding path to reach a popular product, consider creating a more direct route. If a certain aisle is consistently avoided, it might be a "dead zone" needing revitalization.
+**P**ath Analysis:** If many users take a long, winding path to reach a popular product, consider creating a more direct route. If a certain aisle is consistently avoided, it might be a "dead zone" needing revitalization.
 
 Staffing Optimization:
 
@@ -309,6 +317,8 @@ Track if promotional displays (treated as temporary "product locations") lead to
 Example SQL for Actionable Insights:
 
 -- Identify zones with low average dwell time (conceptual, based on point count)
+
+```
 SELECT
     sz.name AS zone_name,
     AVG(points_in_zone) AS avg_points_per_user_visit
@@ -328,6 +338,7 @@ GROUP BY
     sz.name
 ORDER BY
     avg_points_per_user_visit ASC; -- Zones with lower average points might need attention
+```
 
 -- Find products that are frequently passed by but not "dwelled" on (conceptual)
 -- This would involve comparing products near paths with products that have associated dwell time.
