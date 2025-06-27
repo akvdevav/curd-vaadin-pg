@@ -187,20 +187,35 @@ WHERE details @> '{"brand": "TechGear"}';
 ```
 
 - Find products with a stock less than 50 (numeric comparison requires casting)
+
+```
 SELECT name, category, details->>'stock' AS stock FROM products
 WHERE (details->>'stock')::INT < 50;
+```
 
--- Find products that have 'RGB lighting' as a feature (uses contains on array)
+
+- Find products that have 'RGB lighting' as a feature (uses contains on array)
+
+```
 SELECT name, category, details->'features' AS features_array FROM products
 WHERE details->'features' @> '["RGB lighting"]';
+```
 
--- Find products where the 'details' JSONB contains a top-level key named 'warranty_years'
+
+- Find products where the 'details' JSONB contains a top-level key named 'warranty_years'
+
+```
 SELECT name, details->>'warranty_years' AS warranty FROM products
 WHERE details ? 'warranty_years';
+```
 
--- Find products that have either 'colors_available' or 'material' as a top-level key
+- Find products that have either 'colors_available' or 'material' as a top-level key
+
+```
 SELECT name, details FROM products
 WHERE details ?| ARRAY['colors_available', 'material'];
+```
+
 
 -- Find products that have both 'stock' and 'price' as top-level keys
 SELECT name, details FROM products
