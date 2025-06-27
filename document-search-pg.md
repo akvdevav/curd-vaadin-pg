@@ -320,7 +320,8 @@ CREATE INDEX idx_products_details_brand ON products USING BTREE ((details->>'bra
 ```
 CREATE INDEX idx_products_details_stock ON products ((details->>'stock')::INT);
 ```
-Explanation:
+
+**Explanation:**
 
 ((details->>'price')::NUMERIC): This creates an index on the price field, cast to a numeric type. This will speed up queries like WHERE (details->>'price')::NUMERIC < 100.
 
@@ -329,7 +330,6 @@ Explanation:
 This showcase provides a strong foundation for using JSONB in PostgreSQL to manage and query document-oriented data effectively.
 
 
-#######################
 
 
 
