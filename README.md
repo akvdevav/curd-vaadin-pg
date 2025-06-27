@@ -110,59 +110,67 @@ colima start --cpu 8 --memory 12
 
 ### Image creation (WIP - TESTING NEEDED)
 
-> check for dependency conflicts
+- check for dependency conflicts
 ```
 mvn dependency:tree
 ```
 
-> Building a production build with vaadin options
+- Building a production build with vaadin options
 
 ```
 mvn clean package -Pproduction -Dvaadin.force.production.build=true -DskipTests
 ```
 
-> Verfify if vaadin builds are prod ready
+- Verfify if vaadin builds are prod ready
+
 ```
 jar tvf target/crud-with-vaadin-initial-0.0.1-SNAPSHOT.jar | grep META-INF/VAADIN/
 ```
 
 
-> To create the image, run the following goal: (-X for debug ouput)
+- To create the image, run the following goal: (-X for debug ouput)
+
 ```
 ./mvnw spring-boot:build-image -Pnative -DskipTests -X
 ```
 
-> Clean image build (-X for debug ouput)
+- Clean image build (-X for debug ouput)
+
 ```
 ./mvnw clean package spring-boot:build-image -Pnative -DskipTests -X
 ```
-> Build image with multple threads (if the above fails)
+
+- Build image with multple threads (if the above fails)
+
 ```
 mvn clean package -Pnative spring-boot:build-image -T 8C -DskipTests
 ```
 
 
-> Then, you can run the app like any other container:
+- Then, you can run the app like any other container:
 
 ```
 docker run --rm -p 8080:8080 docker.io/library/crud-with-vaadin-initial:0.0.1-SNAPSHOT
 ```
 ### Executable with Native Build Tools
-> Use this option if you want to explore more options such as running your tests in a native image. The GraalVM native-image compiler should be installed and configured on your machine.
 
-> NOTE: GraalVM 22.3+ is required.
+- Use this option if you want to explore more options such as running your tests in a native image. The GraalVM native-image compiler should be installed and configured on your machine.
 
-> To create the executable, run the following goal:
+- NOTE: GraalVM 22.3+ is required.
+
+- To create the executable, run the following goal:
+
 ```
 ./mvnw native:compile -Pnative
 ```
-> Then, you can run the app as follows:
+- Then, you can run the app as follows:
+
 ```
 target/spdemo
 ```
-> You can also run your existing tests suite in a native image. This is an efficient way to validate the compatibility of your application.
+- You can also run your existing tests suite in a native image. This is an efficient way to validate the compatibility of your application.
 
-> To run your existing tests in a native image, run the following goal:
+- To run your existing tests in a native image, run the following goal:
 
 ```
 ./mvnw test -PnativeTest
