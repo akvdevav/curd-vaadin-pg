@@ -343,6 +343,8 @@ ORDER BY
 -- Find products that are frequently passed by but not "dwelled" on (conceptual)
 -- This would involve comparing products near paths with products that have associated dwell time.
 -- For example, if 'Apples' are near many user paths but few users actually stop in the 'Produce' zone for long.
+
+```
 SELECT
     pl.product_name,
     COUNT(DISTINCT up.user_id) AS users_passed_by
@@ -354,5 +356,6 @@ GROUP BY
     pl.product_name
 ORDER BY
     users_passed_by DESC;
+```
 
 This extended example provides a robust framework for using PostGIS to analyze customer movement in a store, offering valuable data-driven insights for strategic store optimization.
