@@ -115,8 +115,8 @@ INSERT INTO user_visits (user_id, location) VALUES
 ('user_101', ST_GeomFromText('POINT(90 10)', 4326)); -- Checkout
 ```
 
--- Simulate another user's movement
--- User 102: Enters, goes to Electronics, then Apparel, then Checkout
+- Simulate another user's movement
+- User 102: Enters, goes to Electronics, then Apparel, then Checkout
 
 ```
 INSERT INTO user_visits (user_id, location) VALUES
@@ -144,9 +144,9 @@ CREATE TABLE user_paths (
 ```
 
 
--- Example: Aggregate user_101's path from user_visits (this would typically be done by an application logic)
--- For demonstration, we'll manually create a LINESTRING for a user's journey.
--- In a real application, you'd group user_visits by user_id and time window, then use ST_MakeLine.
+- Example: Aggregate user_101's path from user_visits (this would typically be done by an application logic)
+- For demonstration, we'll manually create a LINESTRING for a user's journey.
+- In a real application, you'd group user_visits by user_id and time window, then use ST_MakeLine.
 
 ```
 INSERT INTO user_paths (user_id, path_start_time, path_end_time, path) VALUES
@@ -169,7 +169,7 @@ Now, let's use PostGIS to extract insights from the collected data.
 
 Find which zones are most frequently entered or passed through by users.
 
--- Count how many user visits fall within each zone
+- Count how many user visits fall within each zone
 
 ```
 SELECT
@@ -186,7 +186,7 @@ ORDER BY
 ```
 
 
--- Identify zones that user paths intersect (indicating traffic flow)
+- Identify zones that user paths intersect (indicating traffic flow)
 
 ```
 SELECT
@@ -206,8 +206,8 @@ ORDER BY
 
 This requires more sophisticated application logic to calculate time differences between entry and exit points, but we can approximate it by counting consecutive points within a zone.
 
--- This query approximates dwell time by counting consecutive points in a zone.
--- A more accurate approach would involve tracking entry/exit timestamps per zone per user.
+- This query approximates dwell time by counting consecutive points in a zone.
+- A more accurate approach would involve tracking entry/exit timestamps per zone per user.
 
 ```
 SELECT
@@ -229,7 +229,7 @@ ORDER BY
 
 #### 4.3 Path Analysis: Identify Common Routes and Product Interactions
 
--- Find which zones a specific user visited in order (requires ordering by time)
+- Find which zones a specific user visited in order (requires ordering by time)
 
 ```
 SELECT
@@ -246,7 +246,7 @@ ORDER BY
     uv.visit_time;
 ```
 
--- Find products a user passed near or viewed (within a certain buffer distance)
+- Find products a user passed near or viewed (within a certain buffer distance)
 
 ```
 SELECT
@@ -264,9 +264,9 @@ ORDER BY
 
 
 #### 4.4 Co-location Analysis: Discover Products Frequently Viewed Together
--- Find pairs of products that are frequently visited by the same users within a short time frame
--- This is a conceptual query; actual implementation would be more complex, involving time windows.
--- Here, we find products that are "close" to each other on the same user's path.
+- Find pairs of products that are frequently visited by the same users within a short time frame
+- This is a conceptual query; actual implementation would be more complex, involving time windows.
+- Here, we find products that are "close" to each other on the same user's path.
 
 ```
 SELECT
