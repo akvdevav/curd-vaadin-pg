@@ -1,37 +1,49 @@
-🛍️ Tracking Customer Movement for Store Optimization with PostGIS
+## 🛍️ Tracking Customer Movement for Store Optimization with PostGIS
 This example extends the basic PostGIS setup to simulate and analyze customer movement within a retail store. By tracking user paths and interactions with different store zones and products, we can gain valuable insights to optimize store layouts, product placement, and overall customer experience.
 
-🚀 Step 1: Run PostgreSQL + PostGIS with Bitnami (Podman)
+### 🚀 Step 1: Run PostgreSQL + PostGIS with Bitnami (Podman)
 First, ensure your PostgreSQL instance with PostGIS is running.
 
-podman run --rm -it --name postgres \
+```
+docker run --rm -it --name postgres \
   -e POSTGRESQL_PASSWORD=postgres \
   -e POSTGRESQL_DATABASE=postgres \
   -p 5432:5432 \
   bitnami/postgresql:latest
+```
 
-⏳ Wait a few seconds for the database to start, then connect to it:
 
-podman exec -it postgres psql -U postgres -d postgres
+### ⏳ Wait a few seconds for the database to start, then connect to it:
 
-🧱 Step 2: Enable PostGIS Inside the psql prompt:
+```
+docker exec -it postgres psql -U postgres -d postgres
+```
+
+### 🧱 Step 2: Enable PostGIS Inside the psql prompt:
+
 If you haven't already, enable the PostGIS extensions.
 
+```
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
+```
 
-🗺️ Step 3: Define Store Layout, Product Locations, and User Tracking Tables
+
+### 🗺️ Step 3: Define Store Layout, Product Locations, and User Tracking Tables
 We'll create tables to represent the store's physical layout (zones), the location of products, and to record user movement. We'll use GEOMETRY with SRID 4326 for simplicity, treating the store as a flat 2D plane.
 
-3.1 Create store_zones Table (Polygons for Departments/Areas)
+#### 3.1 Create store_zones Table (Polygons for Departments/Areas)
+
 This table defines different areas or departments within your store.
 
+```
 CREATE TABLE store_zones (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
     boundary GEOMETRY(POLYGON, 4326) NOT NULL
 );
+```
 
 -- Insert example store zones (using arbitrary coordinates for a hypothetical store layout)
 -- Imagine a store grid, e.g., 0,0 to 100,100 units
