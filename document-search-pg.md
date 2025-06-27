@@ -446,25 +446,36 @@ Indexes are crucial for performance, especially on large datasets. PostgreSQL of
 ### 4.1. GIN Index for General JSONB Querying
 A GIN (Generalized Inverted Index) is highly recommended for JSONB columns, especially when using operators like @>, ?, ?|, ?&. It indexes all keys and values within the JSONB document.
 
--- Create a GIN index on the entire details JSONB column
+- Create a GIN index on the entire details JSONB column
 CREATE INDEX idx_products_details_gin ON products USING GIN (details);
 
-Explanation:
+**Explanation:**
 This index will significantly speed up queries that check for the existence of keys, check for contained JSONB fragments, or query array elements within the details column.
 
-4.2. B-tree Index on a Specific JSONB Path (Expression Index)
+### 4.2. B-tree Index on a Specific JSONB Path (Expression Index)
+
 If you frequently query or sort by a specific value nested within your JSONB document, and that value is scalar (e.g., number, string, boolean), you can create a B-tree index on an expression. This behaves like a regular index on a column.
 
--- Create a B-tree index on the 'price' field within the details JSONB
+- Create a B-tree index on the 'price' field within the details JSONB
+
+```
 CREATE INDEX idx_products_details_price ON products_json ((details->>'price')::NUMERIC);
+```
 
--- Create a B-tree index on the 'brand' field within the details JSONB
+- Create a B-tree index on the 'brand' field within the details JSONB
+
+```
 CREATE INDEX idx_products_details_brand ON products USING BTREE ((details->>'brand'));
+```
 
--- Create a B-tree index on the 'stock' field within the details JSONB
+- Create a B-tree index on the 'stock' field within the details JSONB
+
+```
 CREATE INDEX idx_products_details_stock ON products ((details->>'stock')::INT);
+```
 
-Explanation:
+**Explanation:**
+These indexes will help speed up queries that filter
 
 ((details->>'price')::NUMERIC): This creates an index on the price field, cast to a numeric type. This will speed up queries like WHERE (details->>'price')::NUMERIC < 100.
 
