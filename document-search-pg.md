@@ -148,21 +148,29 @@ SELECT
 FROM products;
 ```
 
--- Get the first feature (array element 0) of the Quantum Keyboard
+- Get the first feature (array element 0) of the Quantum Keyboard
+
+```
 SELECT
     name,
     details->'features'->>0 AS first_feature
 FROM products
 WHERE name = 'Quantum Keyboard RGB';
+```
 
--- Get the full specifications object for a product
+
+- Get the full specifications object for a product
+
+```
 SELECT
     name,
     details->'specifications' AS specs_jsonb
 FROM products
 WHERE name = 'UltraHD Monitor 27"';
+```
 
-3.2. Filtering by Content
+
+### 3.2. Filtering by Content
 @> (Contains operator): Checks if the left JSONB value contains the right JSONB value. Useful for checking if a document contains a specific key-value pair or sub-document.
 
 ? (Exists operator): Checks if a string (key) exists within the top-level of the JSONB value.
@@ -171,11 +179,14 @@ WHERE name = 'UltraHD Monitor 27"';
 
 ?& (All keys exists operator): Checks if all of the specified keys exist.
 
--- Find products manufactured by 'TechGear'
+- Find products manufactured by 'TechGear'
+
+```
 SELECT name, category, details->>'brand' FROM products
 WHERE details @> '{"brand": "TechGear"}';
+```
 
--- Find products with a stock less than 50 (numeric comparison requires casting)
+- Find products with a stock less than 50 (numeric comparison requires casting)
 SELECT name, category, details->>'stock' AS stock FROM products
 WHERE (details->>'stock')::INT < 50;
 
