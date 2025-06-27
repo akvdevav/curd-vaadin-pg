@@ -330,13 +330,7 @@ CREATE INDEX idx_products_details_stock ON products ((details->>'stock')::INT);
 This showcase provides a strong foundation for using JSONB in PostgreSQL to manage and query document-oriented data effectively.
 
 
-
-
-
-
-
-
-3.2. Filtering by Content
+### 3.2. Filtering by Content
 @> (Contains operator): Checks if the left JSONB value contains the right JSONB value. Useful for checking if a document contains a specific key-value pair or sub-document.
 
 ? (Exists operator): Checks if a string (key) exists within the top-level of the JSONB value.
@@ -345,9 +339,12 @@ This showcase provides a strong foundation for using JSONB in PostgreSQL to mana
 
 ?& (All keys exists operator): Checks if all of the specified keys exist.
 
--- Find products manufactured by 'TechGear'
+- Find products manufactured by 'TechGear'
+
+```
 SELECT name, category, details->>'brand' FROM products
 WHERE details @> '{"brand": "TechGear"}';
+```
 
 -- Find products with a stock less than 50 (numeric comparison requires casting)
 SELECT name, category, details->>'stock' AS stock FROM products
