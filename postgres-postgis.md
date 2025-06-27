@@ -47,6 +47,8 @@ CREATE TABLE store_zones (
 
 -- Insert example store zones (using arbitrary coordinates for a hypothetical store layout)
 -- Imagine a store grid, e.g., 0,0 to 100,100 units
+
+```
 INSERT INTO store_zones (name, description, boundary) VALUES
 ('Entrance', 'Main entrance and greeting area', ST_GeomFromText('POLYGON((0 0, 20 0, 20 20, 0 20, 0 0))', 4326)),
 ('Produce', 'Fresh fruits and vegetables', ST_GeomFromText('POLYGON((0 20, 30 20, 30 50, 0 50, 0 20))', 4326)),
@@ -55,18 +57,26 @@ INSERT INTO store_zones (name, description, boundary) VALUES
 ('Checkout', 'Cashier and exit area', ST_GeomFromText('POLYGON((80 0, 100 0, 100 20, 80 20, 80 0))', 4326)),
 ('Electronics', 'Electronics department', ST_GeomFromText('POLYGON((0 50, 50 50, 50 100, 0 100, 0 50))', 4326)),
 ('Apparel', 'Clothing and accessories', ST_GeomFromText('POLYGON((50 50, 100 50, 100 100, 50 100, 50 50))', 4326));
+```
 
-3.2 Create product_locations Table (Points for Individual Products)
+
+#### 3.2 Create product_locations Table (Points for Individual Products)
+
 This table stores the specific locations of key products or product categories.
 
+```
 CREATE TABLE product_locations (
     id SERIAL PRIMARY KEY,
     product_name TEXT NOT NULL,
     category TEXT,
     location GEOMETRY(POINT, 4326) NOT NULL
 );
+```
+
 
 -- Insert example product locations within the defined zones
+
+```
 INSERT INTO product_locations (product_name, category, location) VALUES
 ('Apples', 'Produce', ST_GeomFromText('POINT(15 35)', 4326)),
 ('Milk (Whole)', 'Dairy', ST_GeomFromText('POINT(45 30)', 4326)),
@@ -75,19 +85,25 @@ INSERT INTO product_locations (product_name, category, location) VALUES
 ('T-Shirt (Mens)', 'Apparel', ST_GeomFromText('POINT(70 80)', 4326)),
 ('Yogurt (Greek)', 'Dairy', ST_GeomFromText('POINT(50 45)', 4326)),
 ('Laptop Pro', 'Electronics', ST_GeomFromText('POINT(10 60)', 4326));
+```
 
-3.3 Create user_visits Table (Individual User Location Points)
+#### 3.3 Create user_visits Table (Individual User Location Points)
+
 This table captures individual location pings from user devices (e.g., Wi-Fi, Bluetooth beacons).
 
+```
 CREATE TABLE user_visits (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL,
     visit_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     location GEOMETRY(POINT, 4326) NOT NULL
 );
+```
 
 -- Simulate a user's movement through the store
 -- User 101: Enters, goes to Produce, then Dairy, then Bakery, then Checkout
+
+```
 INSERT INTO user_visits (user_id, location) VALUES
 ('user_101', ST_GeomFromText('POINT(10 10)', 4326)), -- Entrance
 ('user_101', ST_GeomFromText('POINT(10 25)', 4326)), -- Produce
@@ -97,9 +113,12 @@ INSERT INTO user_visits (user_id, location) VALUES
 ('user_101', ST_GeomFromText('POINT(65 45)', 4326)), -- Bakery
 ('user_101', ST_GeomFromText('POINT(85 15)', 4326)), -- Checkout
 ('user_101', ST_GeomFromText('POINT(90 10)', 4326)); -- Checkout
+```
 
 -- Simulate another user's movement
 -- User 102: Enters, goes to Electronics, then Apparel, then Checkout
+
+```
 INSERT INTO user_visits (user_id, location) VALUES
 ('user_102', ST_GeomFromText('POINT(10 10)', 4326)), -- Entrance
 ('user_102', ST_GeomFromText('POINT(20 55)', 4326)), -- Electronics
@@ -107,10 +126,14 @@ INSERT INTO user_visits (user_id, location) VALUES
 ('user_102', ST_GeomFromText('POINT(60 70)', 4326)), -- Apparel
 ('user_102', ST_GeomFromText('POINT(75 85)', 4326)), -- Apparel
 ('user_102', ST_GeomFromText('POINT(85 15)', 4326)); -- Checkout
+```
 
-3.4 Create user_paths Table (Aggregated User Paths as LINESTRINGs)
+
+#### 3.4 Create user_paths Table (Aggregated User Paths as LINESTRINGs)
+
 This table can store aggregated paths for easier analysis of full journeys.
 
+```
 CREATE TABLE user_paths (
     id SERIAL PRIMARY KEY,
     user_id TEXT NOT NULL,
@@ -118,25 +141,37 @@ CREATE TABLE user_paths (
     path_end_time TIMESTAMP WITH TIME ZONE,
     path GEOMETRY(LINESTRING, 4326) NOT NULL
 );
+```
+
 
 -- Example: Aggregate user_101's path from user_visits (this would typically be done by an application logic)
 -- For demonstration, we'll manually create a LINESTRING for a user's journey.
 -- In a real application, you'd group user_visits by user_id and time window, then use ST_MakeLine.
+
+```
 INSERT INTO user_paths (user_id, path_start_time, path_end_time, path) VALUES
 ('user_101', '2025-06-27 08:00:00+00', '2025-06-27 08:05:00+00',
     ST_GeomFromText('LINESTRING(10 10, 10 25, 15 30, 35 30, 40 40, 65 45, 85 15, 90 10)', 4326));
+```
 
+```
 INSERT INTO user_paths (user_id, path_start_time, path_end_time, path) VALUES
 ('user_102', '2025-06-27 08:10:00+00', '2025-06-27 08:14:00+00',
     ST_GeomFromText('LINESTRING(10 10, 20 55, 30 70, 60 70, 75 85, 85 15)', 4326));
+```
 
-🔎 Step 4: Analyze User Behavior with Spatial Queries
+
+### 🔎 Step 4: Analyze User Behavior with Spatial Queries
+
 Now, let's use PostGIS to extract insights from the collected data.
 
-4.1 Hotspot Analysis: Identify Frequently Visited Zones
+#### 4.1 Hotspot Analysis: Identify Frequently Visited Zones
+
 Find which zones are most frequently entered or passed through by users.
 
 -- Count how many user visits fall within each zone
+
+```
 SELECT
     sz.name AS zone_name,
     COUNT(uv.id) AS total_visits_in_zone
@@ -148,8 +183,12 @@ GROUP BY
     sz.name
 ORDER BY
     total_visits_in_zone DESC;
+```
+
 
 -- Identify zones that user paths intersect (indicating traffic flow)
+
+```
 SELECT
     sz.name AS zone_name,
     COUNT(DISTINCT up.user_id) AS unique_users_passing_through
@@ -161,12 +200,16 @@ GROUP BY
     sz.name
 ORDER BY
     unique_users_passing_through DESC;
+```
 
-4.2 Dwell Time Analysis: Calculate Time Spent in Zones
+#### 4.2 Dwell Time Analysis: Calculate Time Spent in Zones
+
 This requires more sophisticated application logic to calculate time differences between entry and exit points, but we can approximate it by counting consecutive points within a zone.
 
 -- This query approximates dwell time by counting consecutive points in a zone.
 -- A more accurate approach would involve tracking entry/exit timestamps per zone per user.
+
+```
 SELECT
     sz.name AS zone_name,
     uv.user_id,
@@ -181,9 +224,14 @@ GROUP BY
     sz.name, uv.user_id
 ORDER BY
     zone_name, estimated_time_units DESC;
+```
 
-4.3 Path Analysis: Identify Common Routes and Product Interactions
+
+#### 4.3 Path Analysis: Identify Common Routes and Product Interactions
+
 -- Find which zones a specific user visited in order (requires ordering by time)
+
+```
 SELECT
     uv.user_id,
     sz.name AS zone_visited,
@@ -196,6 +244,7 @@ WHERE
     uv.user_id = 'user_101'
 ORDER BY
     uv.visit_time;
+```
 
 -- Find products a user passed near or viewed (within a certain buffer distance)
 SELECT
