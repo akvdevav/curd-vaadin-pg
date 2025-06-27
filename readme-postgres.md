@@ -14,3 +14,18 @@ docker run --name demo-postgres \
 postgres=# CREATE EXTENSION pg_stat_statements;
 CREATE EXTENSION
 ```
+
+
+```
+SELECT                                                                                     
+    query,
+    calls,                                                        
+    total_exec_time AS total_execution_time, -- Renaming for clarity
+    rows,
+    stats_since AS last_stats_reset_or_start_time -- Renaming for clarity
+FROM
+    pg_stat_statements
+ORDER BY
+    stats_since DESC -- Order by when the stats for this query were last accumulated/reset
+LIMIT 50;
+```
