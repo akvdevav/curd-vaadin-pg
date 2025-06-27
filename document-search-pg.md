@@ -217,28 +217,39 @@ WHERE details ?| ARRAY['colors_available', 'material'];
 ```
 
 
--- Find products that have both 'stock' and 'price' as top-level keys
+- Find products that have both 'stock' and 'price' as top-level keys
+
+```
 SELECT name, details FROM products
 WHERE details ?& ARRAY['stock', 'price'];
+```
 
--- Find products with reviews where a rating of 5 exists
--- This involves unnesting the array and checking its contents
+
+- Find products with reviews where a rating of 5 exists
+- This involves unnesting the array and checking its contents
+
+```
 SELECT p.name, p.category, review->>'user' AS reviewer, review->>'rating' AS rating
 FROM products p, jsonb_array_elements(p.details->'reviews') AS review
 WHERE review @> '{"rating": 5}';
+```
 
-3.3. Advanced Queries
-jsonb_array_elements(): Expands a JSON array into a set of JSONB values.
 
-jsonb_each_text(): Expands the top-level JSON object into a set of key/value pairs.
+### 3.3. Advanced Queries
+- jsonb_array_elements(): Expands a JSON array into a set of JSONB values.
 
--- List all features for each product (unnesting the features array)
+- jsonb_each_text(): Expands the top-level JSON object into a set of key/value pairs.
+
+- List all features for each product (unnesting the features array)
+
+```
 SELECT
     p.name,
     feature_text
 FROM
     products p,
     jsonb_array_elements_text(p.details->'features') AS feature_text;
+```
 
 -- Find products that are "In Stock" AND have a price less than 100
 SELECT name, category, details->>'price' AS price, details->>'availability' AS availability
