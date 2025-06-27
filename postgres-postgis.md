@@ -45,8 +45,8 @@ CREATE TABLE store_zones (
 );
 ```
 
--- Insert example store zones (using arbitrary coordinates for a hypothetical store layout)
--- Imagine a store grid, e.g., 0,0 to 100,100 units
+- Insert example store zones (using arbitrary coordinates for a hypothetical store layout)
+- Imagine a store grid, e.g., 0,0 to 100,100 units
 
 ```
 INSERT INTO store_zones (name, description, boundary) VALUES
@@ -100,8 +100,8 @@ CREATE TABLE user_visits (
 );
 ```
 
--- Simulate a user's movement through the store
--- User 101: Enters, goes to Produce, then Dairy, then Bakery, then Checkout
+- Simulate a user's movement through the store
+- User 101: Enters, goes to Produce, then Dairy, then Bakery, then Checkout
 
 ```
 INSERT INTO user_visits (user_id, location) VALUES
