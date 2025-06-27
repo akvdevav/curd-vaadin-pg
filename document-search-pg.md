@@ -130,20 +130,23 @@ INSERT INTO products (name, category, details) VALUES
 ```
 
 
-3. Querying JSONB Data
+## 3. Querying JSONB Data
 PostgreSQL offers powerful operators and functions for querying JSONB data.
 
-3.1. Basic Extraction
+### 3.1. Basic Extraction
 -> (JSON object field or array element as JSONB): Extracts a JSON object field or array element. The result is still JSONB.
 
 ->> (JSON object field or array element as text): Extracts a JSON object field or array element as TEXT.
 
--- Get the brand and price of all products
+- Get the brand and price of all products
+
+```
 SELECT
     name,
     details->>'brand' AS brand,
     details->>'price' AS price
 FROM products;
+```
 
 -- Get the first feature (array element 0) of the Quantum Keyboard
 SELECT
